@@ -4,13 +4,18 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRegistration;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import rs.devlabs.api.resources.HelloResource;
 
 /**
  * @author Miloš Stojković <milos@ast.co.rs>
@@ -20,6 +25,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 @Configuration
 @ComponentScan(basePackages = "rs.devlabs.api")
 public class ApplicationInitializer implements WebApplicationInitializer {
+
     @Override
     public void onStartup(ServletContext servletContext) {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();

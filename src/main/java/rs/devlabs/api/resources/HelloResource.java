@@ -5,6 +5,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Miloš Stojković <milos@ast.co.rs>
@@ -14,8 +16,12 @@ import jakarta.ws.rs.core.Response;
 @Produces(MediaType.TEXT_PLAIN)
 public class HelloResource {
 
+    private static final Logger logger = LoggerFactory.getLogger(HelloResource.class);
+
     @GET
     public Response hello() {
+        logger.info("printing hello");
+
         return Response.ok("Hello World!").build();
     }
 }

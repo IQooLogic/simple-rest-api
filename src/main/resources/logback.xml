@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{ISO8601} [%-25thread] %.-1level %-40.40logger{40} - %message%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- *********************************************************************************** -->
+    <!-- * 3rd party components -->
+    <!-- *********************************************************************************** -->
+<!--    <logger name="org.springframework" level="WARN"/>-->
+<!--    <logger name="org.springframework.data.document.mongodb" level="WARN"/>-->
+<!--    <logger name="com.mongodb.ReplicaSetStatus" level="ERROR"/>-->
+
+    <!-- *********************************************************************************** -->
+    <!-- * REST -->
+    <!-- *********************************************************************************** -->
+    <logger name="rs.devlabs.api" level="INFO"/>
+
+    <root level="INFO">
+         <appender-ref ref="stdout"/>
+    </root>
+</configuration>
