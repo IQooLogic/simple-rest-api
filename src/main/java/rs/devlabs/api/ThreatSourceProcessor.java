@@ -1,12 +1,9 @@
 package rs.devlabs.api;
 
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Invocation;
-import jakarta.ws.rs.client.WebTarget;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-import org.glassfish.jersey.client.ClientConfig;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +16,9 @@ import rs.devlabs.api.db.model.ThreatSource;
 import rs.devlabs.api.db.repos.ThreatIndicatorRepository;
 import rs.devlabs.api.db.repos.ThreatSourceRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Miloš Stojković <milos@ast.co.rs>
@@ -53,20 +49,29 @@ public class ThreatSourceProcessor implements SchedulingConfigurer {
         Iterable<ThreatSource> sources = repo.findAll();
         sources.forEach(source -> {
             logger.info("Processing '{}' source ...", source.getId());
-            try (Client client = ClientBuilder.newClient()) {
-                WebTarget target = client.target(source.getId());
-                Invocation.Builder request = target.request(MediaType.TEXT_PLAIN);
-                Response response = request.get();
-                if (response.getStatus() == 200) {
-                    String strIPs = response.readEntity(String.class);
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .build();
+
+            try {
+                Request request = new Request.Builder()
+                        .url("http://blocklist.greensnow.co/greensnow.txt")
+                        .build();
+
+                Call call = client.newCall(request);
+                Response response = call.execute();
+                if (response.code() == 200) {
+                    String strIPs = response.body().string();
                     List<ThreatIndicator> indicators = new ArrayList<>();
                     strIPs.lines().forEach(ip -> {
                         long now = System.currentTimeMillis();
-                        indicators.add(new ThreatIndicator(ip, now, now));
+                        ThreatIndicator ti = new ThreatIndicator(ip, now, now);
+                        indicators.add(ti);
                     });
                     tiRepo.saveAll(indicators);
+                    logger.info("Saved {} threat indicators", indicators.size());
                 }
-            } catch (RuntimeException ex) {
+            } catch (RuntimeException | IOException ex) {
                 logger.error("Error processing", ex);
             }
         });

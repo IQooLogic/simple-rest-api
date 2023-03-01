@@ -1,6 +1,7 @@
 package rs.devlabs.api.db.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -9,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * 24.02.2023T14:16
  */
 @Table(value = "threat_indicator")
-public class ThreatIndicator {
+public class ThreatIndicator implements Persistable<String> {
     @Id
     private String id;
     @Column(value = "last_updated")
@@ -28,6 +29,11 @@ public class ThreatIndicator {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
     }
 
     public void setId(String id) {
