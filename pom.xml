@@ -15,7 +15,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jersey.version>3.1.1</jersey.version>
-        <spring.version>6.0.5</spring.version>
+        <spring.version>6.0.6</spring.version>
         <jakarta.version>10.0.0</jakarta.version>
     </properties>
 
