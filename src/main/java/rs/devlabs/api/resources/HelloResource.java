@@ -28,6 +28,7 @@ public class HelloResource {
 
     @Path("/say")
     @GET
+    @Produces(MediaType.TEXT_PLAIN)
     public Response say(@QueryParam("what") String what) {
         return Response.ok(what).build();
     }
