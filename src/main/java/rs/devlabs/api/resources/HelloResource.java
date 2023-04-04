@@ -3,6 +3,7 @@ package rs.devlabs.api.resources;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
@@ -23,5 +24,11 @@ public class HelloResource {
         logger.info("printing hello");
 
         return Response.ok("Hello World!!!").build();
+    }
+
+    @Path("/say")
+    @GET
+    public Response say(@QueryParam("what") String what) {
+        return Response.ok(what).build();
     }
 }
