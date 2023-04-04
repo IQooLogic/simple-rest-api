@@ -22,6 +22,6 @@ public class HelloResource {
     public Response hello() {
         logger.info("printing hello");
 
-        return Response.ok("Hello World!").build();
+        return Response.ok("Hello World!!!").build();
     }
 }
